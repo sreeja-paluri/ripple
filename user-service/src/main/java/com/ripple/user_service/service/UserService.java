@@ -1,7 +1,10 @@
 package com.ripple.user_service.service;
 
 
+import com.ripple.user_service.dto.UserRequest;
+import com.ripple.user_service.dto.UserResponse;
 import com.ripple.user_service.entity.User;
+import com.ripple.user_service.mapper.UserMapper;
 import com.ripple.user_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import java.util.List;
 
 public interface UserService {
     public List<User>  getUsers();
+   UserResponse createUser(UserRequest request);
 }
 
 @Service
@@ -20,5 +24,12 @@ public interface UserService {
     @Override
      public List<User> getUsers() {
          return repository.findAll();
+     }
+
+     @Override
+    public UserResponse createUser(UserRequest request){
+        User user = UserMapper.toEntity(request);
+       User savedUser = repository.save(user);
+       return UserMapper.response(user);
      }
  }
