@@ -2,15 +2,15 @@ class User {
   final int id;
   final String username;
   final String email;
-  final String createdAt;
+  final String? createdAt;
 
-  User(
-      {required this.id,
-      required this.username,
-      required this.email,
-      required this.createdAt});
+  User({
+    required this.id,
+    required this.username,
+    required this.email,
+    this.createdAt,
+  });
 
-  //A constructor that can build the object in a custom way
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
@@ -19,4 +19,11 @@ class User {
       createdAt: json['createdAt'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'username': username,
+        'email': email,
+        'createdAt': createdAt,
+      };
 }

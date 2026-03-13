@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ripple_app/service/user_api_service.dart';
+import 'package:ripple_app/service/user_service.dart';
 
 class CreateUserScreen extends StatefulWidget {
   const CreateUserScreen({super.key});
@@ -13,7 +13,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  final UserApiService apiService = UserApiService();
+  final UserService apiService = UserService();
 
   bool isLoading = false;
 
@@ -24,9 +24,9 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
 
     try {
       await apiService.createUser(
-        usernameController.text,
-        emailController.text,
-        passwordController.text,
+        username: usernameController.text,
+        email: emailController.text,
+        password: passwordController.text,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
