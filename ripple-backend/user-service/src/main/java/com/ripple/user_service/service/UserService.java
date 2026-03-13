@@ -7,12 +7,15 @@ import com.ripple.user_service.entity.User;
 import com.ripple.user_service.exception.UserNotFoundException;
 import com.ripple.user_service.mapper.UserMapper;
 import com.ripple.user_service.repository.UserRepository;
-import com.ripple.user_service.response.ApiResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
+
 import java.util.List;
+
 
 public interface UserService {
     List<User>  getUsers();
@@ -31,6 +34,7 @@ public interface UserService {
 
     @Autowired
     UserRepository repository;
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     @Override
      public List<User> getUsers() {
          return repository.findAll();
@@ -40,7 +44,7 @@ public interface UserService {
     public UserResponse createUser(UserRequest request){
         User user = UserMapper.toEntity(request); // convert json to entity
        User savedUser = repository.save(user); // save
-
+         log.info("User created with email={}", user.getEmail());
        return UserMapper.toResponse(savedUser);// use mapper and convert to response DTO
      }
 
