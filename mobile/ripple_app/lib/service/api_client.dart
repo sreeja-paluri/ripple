@@ -114,8 +114,9 @@ class ApiClient {
 
   /// Builds a backend-shaped error map so callers always get a consistent envelope.
   Map<String, dynamic> _errorMap(String message) => {
-        'status': 'error',
-        'message': message,
-        'data': null,
-      };
+      'status': 'error',
+      'success': false,   // ← add this
+      'message': message,
+      'data': null,
+};
 }

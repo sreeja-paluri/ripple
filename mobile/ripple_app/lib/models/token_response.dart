@@ -1,4 +1,4 @@
-import 'user.dart';
+import 'package:ripple_app/models/user.dart';
 
 class TokenResponse {
   final String token;
@@ -16,7 +16,7 @@ class TokenResponse {
   factory TokenResponse.fromJson(Map<String, dynamic> json) {
     return TokenResponse(
       token: json['token'],
-      expiresInMs: json['expiresInMs'],
+      expiresInMs: json['expiresInMs'] ?? 0,
       tokenType: json['tokenType'] ?? 'Bearer',
       user: json['user'] != null ? User.fromJson(json['user']) : null,
     );
