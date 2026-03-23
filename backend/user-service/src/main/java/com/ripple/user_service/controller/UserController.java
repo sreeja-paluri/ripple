@@ -5,6 +5,8 @@ import com.ripple.user_service.dto.UserResponse;
 import com.ripple.user_service.entity.User;
 import com.ripple.user_service.response.ApiResponse;
 import com.ripple.user_service.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +23,12 @@ public class UserController {
     }
 
     @GetMapping("/api/users")
-    public List<User> getUsers(){
-        return service.getUsers();
+    public ResponseEntity<ApiResponse<Page<UserResponse>>> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<UserResponse> users = service.getAllUsers(PageRequest.of(page, size));
+        return ResponseEntity.ok(ApiResponse.success("Users fetched", users));
     }
 
     @PostMapping("/api/users")

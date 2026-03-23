@@ -11,16 +11,16 @@ import com.ripple.user_service.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-import java.util.List;
-
-
 public interface UserService {
-    List<User>  getUsers();
 
-   UserResponse createUser(UserRequest request);
+    Page<UserResponse> getAllUsers(Pageable pageable);
+
+    UserResponse createUser(UserRequest request);
 
    UserResponse getUserById(Long id);
 
@@ -35,11 +35,12 @@ public interface UserService {
     @Autowired
     UserRepository repository;
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
-    @Override
-     public List<User> getUsers() {
-         return repository.findAll();
-     }
 
+    @Override
+    public Page<UserResponse> getAllUsers(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(UserMapper::toResponse);
+    }
      @Override
     public UserResponse createUser(UserRequest request){
         User user = UserMapper.toEntity(request); // convert json to entity

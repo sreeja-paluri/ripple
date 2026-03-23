@@ -3,7 +3,7 @@ import 'package:ripple_app/models/user.dart';
 import 'package:ripple_app/service/auth_service.dart';
 import 'package:ripple_app/service/user_service.dart';
 
-import 'login_screen.dart';
+import '../auth/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

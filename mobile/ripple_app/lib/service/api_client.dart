@@ -5,9 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:ripple_app/utils/api_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// ApiClient — single HTTP client for the app.
-/// AUTO-ATTACHES JWT to every request — no manual header setting anywhere else.
-/// Returns raw Map<String, dynamic> matching the backend ApiResponse envelope.
+
 class ApiClient {
   ApiClient._();
   static final ApiClient instance = ApiClient._();

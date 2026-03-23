@@ -1,8 +1,8 @@
 // lib/guards/auth_guard.dart
 
 import 'package:flutter/material.dart';
-import '../screens/login_screen.dart';
-import '../screens/home_screen.dart';
+import '../screens/auth/login_screen.dart';
+import '../screens/home/home_screen.dart';
 import '../service/auth_service.dart';
 
 /// AuthGuard — checks for stored JWT on app launch.

@@ -23,6 +23,7 @@ public interface AuthService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final BCryptPasswordEncoder passwordEncoder;
+    long expiresInMs = 86400000; // 24 hours — match whatever you set in JwtUtil
 
     public AuthServiceImpl(
             UserRepository userRepository,
@@ -47,7 +48,7 @@ public interface AuthService {
 
         String token = jwtUtil.generateToken(user.getEmail());
 
-        return new TokenResponseDTO(token);
+        return new TokenResponseDTO(token, expiresInMs);
     }
 
     @Override

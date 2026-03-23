@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ripple_app/service/auth_service.dart';
 import 'package:ripple_app/widgets/api_widgets.dart';
 
-import 'home_screen.dart';
+import '../home/home_screen.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -67,14 +67,10 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text.trim(),
         password: _passwordController.text,
       );
-      print('RAW RESPONSE: $response');
-      print('SUCCESS: ${response.isSuccess}');
-      print('MESSAGE: ${response.message}');
 
       if (!mounted) return;
 
       if (response.isSuccess) {
-        print('www+ ${response.isSuccess}');
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const HomeScreen()),
         );
@@ -82,8 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
         showErrorSnackbar(context, response.message);
       }
     } catch (e) {
-      if (mounted)
+      if (mounted) {
         showErrorSnackbar(context, 'Login failed. Please try again.');
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
