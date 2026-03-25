@@ -2,13 +2,15 @@ package com.ripple.friend_service.service.impl;
 
 import com.ripple.friend_service.dto.FriendResponseDTO;
 import com.ripple.friend_service.entity.Friend;
+import com.ripple.friend_service.exception.AlreadyFollowingException;
+import com.ripple.friend_service.exception.FriendshipNotFoundException;
+import com.ripple.friend_service.exception.SelfFollowException;
 import com.ripple.friend_service.mapper.FriendMapper;
 import com.ripple.friend_service.repository.FriendRepository;
 import com.ripple.friend_service.service.FriendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,10 +23,10 @@ public class FriendServiceImpl implements FriendService{
     @Override
     public FriendResponseDTO follow(Long followerId, Long followingId){
         if(followerId.equals(followingId)){
-            throw new IllegalArgumentException("Can't follow yourself");
+            throw new SelfFollowException("Can't follow yourself");
         }
         if(friendRepository.existsByFollowerIdAndFollowingId(followerId,followingId)){
-            throw new IllegalArgumentException("Already following this user");
+            throw new AlreadyFollowingException("Already following this user");
         }
         Friend friend = new Friend();
         friend.setFollowingId(followingId);
@@ -36,10 +38,10 @@ public class FriendServiceImpl implements FriendService{
     @Override
     public void unfollow(Long followerId, Long followingId) {
         if(followerId.equals(followingId)) {
-            throw new IllegalArgumentException("Can't unfollow yourself");
+            throw new SelfFollowException("Can't unfollow yourself");
         }
        Friend friend = friendRepository.findByFollowerIdAndFollowingId(followerId,followingId).orElseThrow(
-               () -> new IllegalArgumentException("Not following the user")
+               () -> new FriendshipNotFoundException("Not following the user")
        );
         friendRepository.delete(friend);
     }

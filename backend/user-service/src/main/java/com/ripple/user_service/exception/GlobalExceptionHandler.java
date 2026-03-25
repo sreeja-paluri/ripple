@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiResponse<?>> handleUserNotFound(UserNotFoundException ex) {
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ApiResponse<>(false, ex.getMessage(), null));
     }
 
