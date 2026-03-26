@@ -7,6 +7,7 @@ import com.ripple.friend_service.exception.FriendshipNotFoundException;
 import com.ripple.friend_service.exception.SelfFollowException;
 import com.ripple.friend_service.mapper.FriendMapper;
 import com.ripple.friend_service.repository.FriendRepository;
+import com.ripple.friend_service.service.CacheService;
 import com.ripple.friend_service.service.FriendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 @RequiredArgsConstructor
 public class FriendServiceImpl implements FriendService{
 
     public final FriendRepository friendRepository;
     public final FriendMapper mapper;
+    public final CacheService cacheService;
     @Override
     public FriendResponseDTO follow(Long followerId, Long followingId){
         if(followerId.equals(followingId)){
@@ -32,6 +35,8 @@ public class FriendServiceImpl implements FriendService{
         friend.setFollowingId(followingId);
         friend.setFollowerId(followerId);
         Friend saved = friendRepository.save(friend);
+        cacheService.incrementFollowerCount(followingId);
+        cacheService.incrementFollowingCount(followerId);
         return mapper.toResponse(saved);
     }
 
@@ -44,6 +49,8 @@ public class FriendServiceImpl implements FriendService{
                () -> new FriendshipNotFoundException("Not following the user")
        );
         friendRepository.delete(friend);
+        cacheService.decrementFollowerCount(followingId);
+        cacheService.decrementFollowingCount(followerId);
     }
 
     @Override
