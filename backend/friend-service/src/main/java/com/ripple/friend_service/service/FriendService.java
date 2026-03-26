@@ -11,4 +11,7 @@ public interface FriendService {
     void unfollow(Long followerId,Long followingId);
     List<FriendResponseDTO> getAllFollowers(Long userId);
     List<FriendResponseDTO> getAllFollowing(Long userId);
+
+    Long getCountOfFollowers(Long userId);
+    Long getCountOfFollowing(Long userId);
 }

@@ -2,6 +2,7 @@ package com.ripple.friend_service.controller;
 
 import com.ripple.friend_service.dto.FriendRequestDTO;
 import com.ripple.friend_service.dto.FriendResponseDTO;
+import com.ripple.friend_service.dto.FriendshipCountResponseDTO;
 import com.ripple.friend_service.response.ApiResponse;
 import com.ripple.friend_service.service.FriendService;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +42,14 @@ public class FriendController {
         List<FriendResponseDTO> following = service.getAllFollowing(userId);
         return ResponseEntity.ok().body(ApiResponse.success("All following list", following));
     }
+
+    @GetMapping("/counts/{userId}")
+    public ResponseEntity<ApiResponse<FriendshipCountResponseDTO>> getCountOfFollowers(@PathVariable Long userId){
+        FriendshipCountResponseDTO response = new FriendshipCountResponseDTO();
+        response.setFollowerCount(service.getCountOfFollowers(userId));
+        response.setFollowingCount(service.getCountOfFollowing(userId));
+        return ResponseEntity.ok(ApiResponse.success("Counts fetched successfully",response));
+    }
+
 
 }

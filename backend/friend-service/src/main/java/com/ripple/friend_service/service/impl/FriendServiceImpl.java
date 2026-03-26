@@ -68,4 +68,24 @@ public class FriendServiceImpl implements FriendService{
                .collect(Collectors.toList());
 
     }
+
+    @Override
+    public Long getCountOfFollowers(Long userId){
+        Long count = cacheService.getFollowerCount(userId);
+        if (count == null) {
+            count = friendRepository.countByFollowingId(userId);
+            cacheService.setFollowerCount(userId,count);
+        }
+        return count;
+    }
+
+    @Override
+    public Long getCountOfFollowing(Long userId){
+      Long count = cacheService.getFollowingCount(userId);
+      if(count == null){
+          count = friendRepository.countByFollowerId(userId);
+          cacheService.setFollowingCount(userId,count);
+      }
+      return count;
+    }
 }

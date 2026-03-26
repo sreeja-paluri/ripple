@@ -45,21 +45,28 @@ public class CacheService {
 
     public Long getFollowerCount(Long userId)
     {
-        try {
             return redisTemplate.opsForValue().get("followers:" + userId);
-        } catch(Exception e){
-            log.error("Redis is unavailable.Could not get follower count for the user{}", userId);
-            return  null;
-        }
     }
 
     public Long getFollowingCount(Long userId){
+        return redisTemplate.opsForValue().get("following:" + userId);
+    }
+
+    public void setFollowerCount(Long userId, Long count) {
         try {
-            return redisTemplate.opsForValue().get("following:" + userId);
-        }catch(Exception e){
-            log.error("Redis is unavailable.Could not get following count for the user{}", userId);
-            return  null;
+            redisTemplate.opsForValue().set("followers:" + userId, count);
+        } catch (Exception e) {
+            log.error("Redis unavailable. Could not set follower count for user {}", userId);
         }
     }
+
+    public void setFollowingCount(Long userId, Long count){
+        try{
+            redisTemplate.opsForValue().set("following:" + userId,count);
+        }catch  (Exception e){
+            log.error("Redis unavailable. Could not set following count for user {}", userId);
+        }
+    }
+
 
 }
