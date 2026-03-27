@@ -52,7 +52,7 @@ class ApiClient {
     bool requiresAuth = true,
   }) async {
     return _execute(() async => http.get(
-          Uri.parse('${AppConstants.baseUrl}$path'),
+          Uri.parse('${AppConstants.userServiceUrl}$path'),
           headers: await _headers(requiresAuth: requiresAuth),
         ));
   }
@@ -63,7 +63,7 @@ class ApiClient {
     bool requiresAuth = false,
   }) async {
     return _execute(() async => http.post(
-          Uri.parse('${AppConstants.baseUrl}$path'),
+          Uri.parse('${AppConstants.userServiceUrl}$path'),
           headers: await _headers(requiresAuth: requiresAuth),
           body: jsonEncode(body),
         ));
@@ -75,7 +75,7 @@ class ApiClient {
     bool requiresAuth = true,
   }) async {
     return _execute(() async => http.put(
-          Uri.parse('${AppConstants.baseUrl}$path'),
+          Uri.parse('${AppConstants.userServiceUrl}$path'),
           headers: await _headers(requiresAuth: requiresAuth),
           body: jsonEncode(body),
         ));
@@ -86,7 +86,7 @@ class ApiClient {
     bool requiresAuth = true,
   }) async {
     return _execute(() async => http.delete(
-          Uri.parse('${AppConstants.baseUrl}$path'),
+          Uri.parse('${AppConstants.userServiceUrl}$path'),
           headers: await _headers(requiresAuth: requiresAuth),
         ));
   }
