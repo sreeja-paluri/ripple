@@ -38,11 +38,17 @@ class AuthService {
       await _client.saveToken(response.data!.token);
     }
 
+    //Save user Id on successful login
+    if (response.isSuccess && response.data?.user != null) {
+      await _client.saveUserId((response.data!.user!.id).toString());
+    }
+
     return response;
   }
 
   Future<void> logout() async {
     await _client.clearToken();
+    await _client.clearUserId();
   }
 
   Future<bool> isLoggedIn() async {

@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:ripple_app/utils/api_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class ApiClient {
   ApiClient._();
   static final ApiClient instance = ApiClient._();
@@ -27,9 +26,27 @@ class ApiClient {
     await prefs.remove(AppConstants.tokenKey);
   }
 
+  // ─── User Info helpers ────────────────────────────────────────────────────────
+
+  Future<void> saveUserId(String userId) async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.setString(AppConstants.userIdKey, userId);
+  }
+
+  Future<String?> getUserId() async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.getString(AppConstants.userIdKey);
+  }
+
+  Future<void> clearUserId() async {
+    final pref = await SharedPreferences.getInstance();
+    pref.remove(AppConstants.userIdKey);
+  }
+
   // ─── Auth headers ─────────────────────────────────────────────────────────
 
-  Future<Map<String, String>> _headers({bool requiresAuth = true}) async {
+  Future<Map<String, String>> _headers(
+      {bool requiresAuth = true, bool includeUserId = false}) async {
     final headers = <String, String>{
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -42,6 +59,13 @@ class ApiClient {
       }
     }
 
+    if (includeUserId) {
+      final userId = await getUserId();
+      if (userId != null) {
+        headers["X-User-Id "] = userId;
+      }
+    }
+
     return headers;
   }
 
@@ -50,10 +74,13 @@ class ApiClient {
   Future<Map<String, dynamic>> get(
     String path, {
     bool requiresAuth = true,
+    bool includeUserId = false,
+    String? baseUrl,
   }) async {
     return _execute(() async => http.get(
-          Uri.parse('${AppConstants.userServiceUrl}$path'),
-          headers: await _headers(requiresAuth: requiresAuth),
+          Uri.parse('${baseUrl ?? AppConstants.userServiceUrl}$path'),
+          headers: await _headers(
+              requiresAuth: requiresAuth, includeUserId: includeUserId),
         ));
   }
 
@@ -61,10 +88,13 @@ class ApiClient {
     String path,
     Map<String, dynamic> body, {
     bool requiresAuth = false,
+    bool includeUserId = false,
+    String? baseUrl,
   }) async {
     return _execute(() async => http.post(
-          Uri.parse('${AppConstants.userServiceUrl}$path'),
-          headers: await _headers(requiresAuth: requiresAuth),
+          Uri.parse('${baseUrl ?? AppConstants.userServiceUrl}$path'),
+          headers: await _headers(
+              requiresAuth: requiresAuth, includeUserId: includeUserId),
           body: jsonEncode(body),
         ));
   }
@@ -73,10 +103,13 @@ class ApiClient {
     String path,
     Map<String, dynamic> body, {
     bool requiresAuth = true,
+    bool includeUserId = false,
+    String? baseUrl,
   }) async {
     return _execute(() async => http.put(
-          Uri.parse('${AppConstants.userServiceUrl}$path'),
-          headers: await _headers(requiresAuth: requiresAuth),
+          Uri.parse('${baseUrl ?? AppConstants.userServiceUrl}$path'),
+          headers: await _headers(
+              requiresAuth: requiresAuth, includeUserId: includeUserId),
           body: jsonEncode(body),
         ));
   }
@@ -84,10 +117,13 @@ class ApiClient {
   Future<Map<String, dynamic>> delete(
     String path, {
     bool requiresAuth = true,
+    bool includeUserId = false,
+    String? baseUrl,
   }) async {
     return _execute(() async => http.delete(
-          Uri.parse('${AppConstants.userServiceUrl}$path'),
-          headers: await _headers(requiresAuth: requiresAuth),
+          Uri.parse('${baseUrl ?? AppConstants.userServiceUrl}$path'),
+          headers: await _headers(
+              requiresAuth: requiresAuth, includeUserId: includeUserId),
         ));
   }
 
@@ -114,9 +150,9 @@ class ApiClient {
 
   /// Builds a backend-shaped error map so callers always get a consistent envelope.
   Map<String, dynamic> _errorMap(String message) => {
-      'status': 'error',
-      'success': false,   // ← add this
-      'message': message,
-      'data': null,
-};
+        'status': 'error',
+        'success': false, // ← add this
+        'message': message,
+        'data': null,
+      };
 }

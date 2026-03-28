@@ -1,15 +1,16 @@
 class FriendCount {
-  final int followerId;
-  final int followingId;
+  final int followingCount;
+  final int followerCount;
 
-  FriendCount({required this.followerId, required this.followingId});
+  FriendCount({required this.followingCount, required this.followerCount});
 
   factory FriendCount.fromJson(Map<String, dynamic> json) {
     return FriendCount(
-        followerId: json['followerId'], followingId: json['followingId']);
+        followingCount: json['followingCount'],
+        followerCount: json['followerCount']);
   }
 
   Map<String, dynamic> toJson() {
-    return {'followingId': followingId, 'followerId': followerId};
+    return {'followingCount': followingCount, 'followerCount': followerCount};
   }
 }
