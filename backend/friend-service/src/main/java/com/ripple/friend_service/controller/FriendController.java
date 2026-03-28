@@ -44,10 +44,11 @@ public class FriendController {
     }
 
     @GetMapping("/counts/{userId}")
-    public ResponseEntity<ApiResponse<FriendshipCountResponseDTO>> getCountOfFollowers(@PathVariable Long userId){
+    public ResponseEntity<ApiResponse<FriendshipCountResponseDTO>> getCountOfFollowers(@PathVariable Long userId, @RequestHeader("X-User-Id")Long currentUserId){
         FriendshipCountResponseDTO response = new FriendshipCountResponseDTO();
         response.setFollowerCount(service.getCountOfFollowers(userId));
         response.setFollowingCount(service.getCountOfFollowing(userId));
+        response.setIsFollowing(service.isFollowing(userId,currentUserId));
         return ResponseEntity.ok(ApiResponse.success("Counts fetched successfully",response));
     }
 

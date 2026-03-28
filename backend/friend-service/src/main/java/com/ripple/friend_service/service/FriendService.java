@@ -2,7 +2,6 @@ package com.ripple.friend_service.service;
 
 
 import com.ripple.friend_service.dto.FriendResponseDTO;
-import com.ripple.friend_service.entity.Friend;
 
 import java.util.List;
 
@@ -14,4 +13,5 @@ public interface FriendService {
 
     Long getCountOfFollowers(Long userId);
     Long getCountOfFollowing(Long userId);
+    Boolean isFollowing(Long userId, Long currentUserId);
 }

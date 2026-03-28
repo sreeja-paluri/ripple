@@ -99,4 +99,9 @@ public class FriendServiceImpl implements FriendService{
       }
       return count;
     }
+
+    @Override
+    public Boolean isFollowing(Long userId, Long currentUserId){
+        return !userId.equals(currentUserId) &&  friendRepository.existsByFollowerIdAndFollowingId(currentUserId,userId);
+    }
 }

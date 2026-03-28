@@ -6,4 +6,5 @@ import lombok.Data;
 public class FriendshipCountResponseDTO {
     private Long followingCount;
     private Long followerCount;
+    private Boolean isFollowing;
 }
