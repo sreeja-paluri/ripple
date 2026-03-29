@@ -6,13 +6,18 @@ public class TokenResponseDTO {
     private long expiresInMs;
     private String tokenType;
 
-    public TokenResponseDTO(String token, long expiresInMs) {
+    private UserResponse user;
+
+    public TokenResponseDTO(String token, long expiresInMs, UserResponse user) {
         this.token = token;
         this.expiresInMs = expiresInMs;
         this.tokenType = "Bearer";
+        this.user = user;
     }
 
     public String getToken() { return token; }
     public long getExpiresInMs() { return expiresInMs; }
     public String getTokenType() { return tokenType; }
+    public UserResponse getUser(){ return  user;}
+
 }

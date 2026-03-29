@@ -48,7 +48,9 @@ public interface AuthService {
 
         String token = jwtUtil.generateToken(user.getEmail());
 
-        return new TokenResponseDTO(token, expiresInMs);
+        UserResponse userDTO = UserMapper.toResponse(user);
+
+        return new TokenResponseDTO(token, expiresInMs, userDTO);
     }
 
     @Override

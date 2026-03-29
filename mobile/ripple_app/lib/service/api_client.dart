@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:ripple_app/utils/api_constants.dart';
+import 'package:ripple_app/utils/app_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiClient {
@@ -62,7 +62,7 @@ class ApiClient {
     if (includeUserId) {
       final userId = await getUserId();
       if (userId != null) {
-        headers["X-User-Id "] = userId;
+        headers["X-User-Id"] = userId;
       }
     }
 

@@ -17,5 +17,5 @@ class AppConstants {
   static const String routeHome = '/home';
 
   //UserId
-  static const String userIdKey = 'user_id_key';
+  static const String userIdKey = 'user_id';
 }

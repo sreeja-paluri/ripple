@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:ripple_app/models/api_response.dart';
 import 'package:ripple_app/models/friend/friend.dart';
 import 'package:ripple_app/models/friend/friend_count.dart';
-import 'package:ripple_app/models/user.dart';
 import 'package:ripple_app/service/api_client.dart';
 import 'package:ripple_app/utils/app_constants.dart';
 
@@ -28,7 +25,8 @@ class FriendService {
   //getCount
   Future<ApiResponse<FriendCount>> getCount({required int userId}) async {
     final raw =
-        await _client.get("/api/friends/counts/$userId", baseUrl: baseUrl);
+        await _client.get("/api/friends/counts/$userId",
+        baseUrl: baseUrl, includeUserId: true);
     return ApiResponse.fromJson(raw, (data) => FriendCount.fromJson(data));
   }
 
