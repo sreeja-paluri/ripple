@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public interface UserService {
@@ -27,6 +29,8 @@ public interface UserService {
    UserResponse updateUser(UserRequest request, Long id);
 
    void deleteUser(Long id);
+
+   List<UserResponse> getUsersByIds(List<Long> id);
 }
 
 @Service
@@ -72,5 +76,12 @@ public interface UserService {
         repository.delete(user);
     }
 
+    @Override
+    public List<UserResponse> getUsersByIds(List<Long> ids){
+        List<User> userList = repository.findByIdIn(ids);
+        return  userList.stream()
+                .map(User -> UserMapper.toResponse(User))
+                .collect(Collectors.toList());
+    }
 
  }

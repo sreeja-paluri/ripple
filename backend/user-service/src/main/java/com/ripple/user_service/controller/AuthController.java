@@ -35,7 +35,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<UserResponse>> register(@Valid @RequestBody UserRequest request) {
         UserResponse user = authService.register(request);
         return ResponseEntity.ok(
-                new ApiResponse<>("SUCCESS", "User registered", user)
+                new ApiResponse<>(true, "User registered", user)
         );
     }
 }

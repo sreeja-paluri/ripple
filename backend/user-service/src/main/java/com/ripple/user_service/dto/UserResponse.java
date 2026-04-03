@@ -16,7 +16,7 @@ public class UserResponse {
 
     public UserResponse() {}
 
-    public UserResponse(Long id, String username, String email, LocalDateTime createdAt) {
+    public UserResponse(Long id, String email, String username, LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
         this.email = email;

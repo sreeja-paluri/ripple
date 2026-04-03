@@ -3,6 +3,7 @@ package com.ripple.user_service.controller;
 import com.ripple.user_service.dto.UserRequest;
 import com.ripple.user_service.dto.UserResponse;
 import com.ripple.user_service.entity.User;
+import com.ripple.user_service.repository.UserRepository;
 import com.ripple.user_service.response.ApiResponse;
 import com.ripple.user_service.service.UserService;
 import org.springframework.data.domain.Page;
@@ -57,5 +58,9 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success("User Deleted Successfully", null));
     }
 
-
+    @GetMapping("/api/users/batch")
+    public ResponseEntity<ApiResponse<List<UserResponse>>> getUsersById(@RequestParam List<Long> ids){
+        List<UserResponse> users = service.getUsersByIds(ids);
+        return ResponseEntity.ok(ApiResponse.success("Users Fetched with Ids",users));
+    }
 }
