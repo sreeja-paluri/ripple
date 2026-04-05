@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ripple_app/screens/friend/followers_screen.dart';
+import 'package:ripple_app/screens/friend/following_screen.dart';
 import 'package:ripple_app/service/friend_service.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -31,24 +33,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
       )),
       body: (isLoadingCounts)
           ? const Center(child: CircularProgressIndicator())
-          : SafeArea(
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 5),
-                  Text('FollowerCount: $followerCount'),
-                  const SizedBox(height: 5),
-                  Text('FollowingCount: $followingCount'),
-                  const SizedBox(height: 5),
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => FollowersScreen(userId: widget.userId),
+                      ),
+                    ),
+                    child: Text('Followers: $followerCount'),
+                  ),
+                  const SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => FollowingScreen(userId: widget.userId),
+                      ),
+                    ),
+                    child: Text('Following: $followingCount'),
+                  ),
+                  const SizedBox(height: 8),
                   TextButton(
                     onPressed: isLoading
                         ? null
                         : () {
                             isFollowing ? _unFollow() : _follow();
                           },
-                    child: isFollowing ? Text('UnFollow') : Text('Follow'),
-                  )
+                    child: isFollowing
+                        ? const Text('UnFollow')
+                        : const Text('Follow'),
+                  ),
                 ],
               ),
             ),

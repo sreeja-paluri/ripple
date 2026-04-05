@@ -27,6 +27,7 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/users/batch").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex ->

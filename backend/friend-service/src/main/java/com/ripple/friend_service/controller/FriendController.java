@@ -1,5 +1,6 @@
 package com.ripple.friend_service.controller;
 
+import com.ripple.friend_service.dto.EnrichedFriendResponseDTO;
 import com.ripple.friend_service.dto.FriendRequestDTO;
 import com.ripple.friend_service.dto.FriendResponseDTO;
 import com.ripple.friend_service.dto.FriendshipCountResponseDTO;
@@ -50,6 +51,20 @@ public class FriendController {
         response.setFollowingCount(service.getCountOfFollowing(userId));
         response.setIsFollowing(service.isFollowing(userId,currentUserId));
         return ResponseEntity.ok(ApiResponse.success("Counts fetched successfully",response));
+    }
+
+    @GetMapping("/followers/{userId}/enriched")
+    public ResponseEntity<ApiResponse<List<EnrichedFriendResponseDTO>>> getEnrichedFollowers(
+            @PathVariable Long userId) {
+        return ResponseEntity.ok(ApiResponse.success("Followers fetched",
+                service.getEnrichedFollowers(userId)));
+    }
+
+    @GetMapping("/following/{userId}/enriched")
+    public ResponseEntity<ApiResponse<List<EnrichedFriendResponseDTO>>> getEnrichedFollowing(
+            @PathVariable Long userId) {
+        return ResponseEntity.ok(ApiResponse.success("Following fetched",
+                service.getEnrichedFollowing(userId)));
     }
 
 

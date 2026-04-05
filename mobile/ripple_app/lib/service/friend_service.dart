@@ -1,4 +1,5 @@
 import 'package:ripple_app/models/api_response.dart';
+import 'package:ripple_app/models/friend/enriched_friend.dart';
 import 'package:ripple_app/models/friend/friend.dart';
 import 'package:ripple_app/models/friend/friend_count.dart';
 import 'package:ripple_app/service/api_client.dart';
@@ -46,5 +47,33 @@ class FriendService {
         await _client.get("/api/friends/following/$userId", baseUrl: baseUrl);
     return ApiResponse.fromJson(raw,
         (data) => (data as List).map((item) => Friend.fromJson(item)).toList());
+  }
+
+  Future<ApiResponse<List<EnrichedFriend>>> getEnrichedFollowers(
+      {required int userId}) async {
+    final raw = await _client.get(
+      '/api/friends/followers/$userId/enriched',
+      baseUrl: baseUrl,
+      includeUserId: true,
+    );
+    return ApiResponse.fromJson(
+      raw,
+      (data) =>
+          (data as List).map((item) => EnrichedFriend.fromJson(item)).toList(),
+    );
+  }
+
+  Future<ApiResponse<List<EnrichedFriend>>> getEnrichedFollowing(
+      {required int userId}) async {
+    final raw = await _client.get(
+      '/api/friends/following/$userId/enriched',
+      baseUrl: baseUrl,
+      includeUserId: true,
+    );
+    return ApiResponse.fromJson(
+      raw,
+      (data) =>
+          (data as List).map((item) => EnrichedFriend.fromJson(item)).toList(),
+    );
   }
 }
